@@ -134,7 +134,8 @@ const StatCard = ({ title, value, icon, color }) => (
 );
 
 const MiniStat = ({ label, value }) => (
-  <div className="bg-slate-50 rounded-2xl p-4 text-center">
+  <div className="bggit remote add origin https://git-training.nagarro.com/nagarro_fresher_training/dotnet/vansh-madaan-3220480.git
+-slate-50 rounded-2xl p-4 text-center">
     <p className="text-lg sm:text-xl font-semibold text-slate-800">
       {value}
     </p>

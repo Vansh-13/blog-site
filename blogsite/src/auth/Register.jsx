@@ -1,0 +1,163 @@
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
+
+function Register() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const navigate = useNavigate();
+
+  const submit = (e) => {
+    e.preventDefault();
+
+    if (!email || !password || !confirmPassword) {
+      toast.warning("All fields are required");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Please enter a valid email");
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    const users = JSON.parse(localStorage.getItem("blog_users")) || [];
+
+    const alreadyExists = users.some((user) => user.username === email);
+
+    if (alreadyExists) {
+      toast.error("Account already exists");
+      return;
+    }
+
+    const newUser = {
+      id: Date.now().toString(),
+      username: email,
+      password,
+    };
+
+    users.push(newUser);
+    localStorage.setItem("blog_users", JSON.stringify(users));
+
+    toast.success("Account created successfully");
+    navigate("/login");
+  };
+
+  return (
+    <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-50 to-white px-4">
+      <div className="w-full max-w-md bg-white border border-slate-200 rounded-3xl p-10 shadow-sm">
+
+        <h2 className="text-3xl font-serif text-slate-900 mb-2">
+          Create an account
+        </h2>
+        <p className="text-sm text-slate-500 mb-8">
+          Join <span className="font-medium">NoteNest</span> and start writing
+        </p>
+
+        <form onSubmit={submit} className="space-y-6">
+
+          {/* EMAIL */}
+          <div>
+            <label className="block text-xs uppercase font-medium text-slate-500 mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-emerald-200"
+            />
+          </div>
+
+          {/* PASSWORD */}
+          <div>
+            <label className="block text-xs uppercase font-medium text-slate-500 mb-2">
+              Password
+            </label>
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Create a password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-emerald-200 pr-12"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-sm"
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
+
+            <p className="text-xs text-slate-400 mt-1">
+              Must be at least 6 characters
+            </p>
+          </div>
+
+          {/* CONFIRM PASSWORD */}
+          <div>
+            <label className="block text-xs uppercase font-medium text-slate-500 mb-2">
+              Confirm Password
+            </label>
+
+            <div className="relative">
+              <input
+                type={showConfirm ? "text" : "password"}
+                placeholder="Re-enter password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-emerald-200 pr-12"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirm(!showConfirm)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-sm"
+              >
+                {showConfirm ? "🙈" : "👁️"}
+              </button>
+            </div>
+          </div>
+
+          {/* SUBMIT */}
+          <button
+            type="submit"
+            className="w-full py-3 rounded-xl bg-slate-900 text-white text-sm hover:bg-slate-800 transition"
+          >
+            Create account
+          </button>
+        </form>
+
+        <p className="text-center text-sm text-slate-500 mt-8">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-slate-900 font-medium hover:underline"
+          >
+            Sign in
+          </Link>
+        </p>
+      </div>
+    </main>
+  );
+}
+
+export default Register;

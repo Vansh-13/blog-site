@@ -1,0 +1,27 @@
+image: node:18
+
+stages:
+  - install
+  - build
+
+cache:
+  paths:
+    - blogsite/node_modules/
+
+install_dependencies:
+  stage: install
+  script:
+    - cd blogsite
+    - npm install
+  artifacts:
+    paths:
+      - blogsite/node_modules/
+
+build_app:
+  stage: build
+  script:
+    - cd blogsite
+    - npm run build
+  artifacts:
+    paths:
+      - blogsite/dist

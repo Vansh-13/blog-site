@@ -70,17 +70,17 @@ function Welcome() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-left">
           <Feature
             icon="📖"
-            title="Read calmly"
+            title="Read calmly."
             desc="Discover thoughtful posts without noise or distractions."
           />
           <Feature
             icon="🔖"
-            title="Save freely"
+            title="Save freely."
             desc="Bookmark ideas you like and revisit them anytime."
           />
           <Feature
             icon="✍️"
-            title="Write simply"
+            title="Write simply."
             desc="Share your thoughts without worrying about likes or trends."
           />
         </div>
